@@ -1,3 +1,4 @@
+package com.mrkostua.mathalarm
 
 import java.util.*
 
@@ -6,7 +7,7 @@ import java.util.*
  */
 class EnvironmentObject(private val dimensionX: Int, private val dimensionY: Int, private val percentOfDirt: Int) {
     private val random = Random()
-    var currentEnvironment: Map<Array<IntArray>, Boolean>
+    var currentEnvironment: MutableMap<Pair<Int, Int>, Boolean>
     var currentAmountOfDirtyRooms: Int
     var positionOfCleaner: Pair<Int, Int>
 
@@ -14,12 +15,13 @@ class EnvironmentObject(private val dimensionX: Int, private val dimensionY: Int
         currentEnvironment = generateInitialEnvironment()
         currentAmountOfDirtyRooms = getInitialAmountOfDirt()
         positionOfCleaner = getInitialPositionOfCleaner()
+
     }
 
-    public fun isCurrentRoomClean() : Boolean{
-        TODO("implement positionOfCleaner  and currentEnvironment")
-    }
-    private fun generateInitialEnvironment(): Map<Array<IntArray>, Boolean> {
+    public fun isCurrentRoomClean(): Boolean = currentEnvironment[positionOfCleaner] ?: true
+
+    private fun generateInitialEnvironment(): SortedMap<Pair<Int, Int>, Boolean> {
+
         TODO("randomly generate some 60% of dirty rooms in [][]")
     }
 
@@ -31,4 +33,7 @@ class EnvironmentObject(private val dimensionX: Int, private val dimensionY: Int
     private fun getRandomNumber(from: Int, to: Int): Int =
             random.nextInt(to - from) + from
 
+    public fun getXdimensionWalls(): Pair<Int, Int> = Pair(0, dimensionX)
+
+    public fun getYdimensionWalls(): Pair<Int, Int> = Pair(0, dimensionY)
 }

@@ -1,3 +1,4 @@
+package com.mrkostua.mathalarm
 
 /**
  * @author Kostiantyn Prysiazhnyi on 30.01.2018.

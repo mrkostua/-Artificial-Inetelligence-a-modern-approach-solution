@@ -1,3 +1,4 @@
+package com.mrkostua.mathalarm
 
 /**
  * @author Kostiantyn Prysiazhnyi on 30.01.2018.
@@ -11,40 +12,86 @@ public class Actuators(private val environmentObject: EnvironmentObject) {
     }
 
     public fun doAction(actionType: ActionType): EnvironmentObject {
-        /**
-         * we need to move position of the cleaner and than check if in this room some dirt located
-         * if yes clean (+ add points) it or otherwise do nothing(+ -1 energy point)
-         */
         when (actionType) {
-            ActionType.TurnLeft -> turnLeft()
-            ActionType.TurnRight -> turnRight()
-            ActionType.GoForward -> goForward()
-            ActionType.GoBack -> goBack()
-            ActionType.Clean -> TODO()
-            ActionType.Idle ->
-                return environmentObject
+            ActionType.TurnLeft -> {
+                updateCleanerLocation(actionType)
+                energyPoints -= 1
+
+            }
+            ActionType.TurnRight -> {
+                updateCleanerLocation(actionType)
+                energyPoints -= 1
+
+            }
+            ActionType.GoForward -> {
+                updateCleanerLocation(actionType)
+                energyPoints -= 1
+
+            }
+            ActionType.GoBack -> {
+                updateCleanerLocation(actionType)
+                energyPoints -= 1
+
+            }
+            else -> {
+                throw UnsupportedOperationException("probably this action is not support at this moment")
+            }
         }
-        TODO("finish implementation")
+
+        if (!environmentObject.isCurrentRoomClean()) {
+            suckDirt()
+
+        }
+        return environmentObject
     }
 
-    private fun turnLeft() {
+    private fun updateCleanerLocation(actionType: ActionType): EnvironmentObject {
+        when (actionType) {
+            ActionType.TurnLeft -> {
+                if (environmentObject.getXdimensionWalls().first != environmentObject.positionOfCleaner.first) {
+                    environmentObject.positionOfCleaner = Pair(environmentObject.positionOfCleaner.first - 1, environmentObject.positionOfCleaner.second)
 
-    }
+                } else {
+                    //todo inform agent that he had meet the wall
+                }
+            }
+            ActionType.TurnRight -> {
+                if (environmentObject.getXdimensionWalls().second != environmentObject.positionOfCleaner.first) {
+                    environmentObject.positionOfCleaner = Pair(environmentObject.positionOfCleaner.first + 1, environmentObject.positionOfCleaner.second)
 
-    private fun turnRight() {
+                } else {
+                    //todo inform agent that he had meet the wall
+                }
 
-    }
+            }
+            ActionType.GoBack -> {
+                if (environmentObject.getYdimensionWalls().first != environmentObject.positionOfCleaner.first) {
+                    environmentObject.positionOfCleaner = Pair(environmentObject.positionOfCleaner.first, environmentObject.positionOfCleaner.second - 1)
 
-    private fun goForward() {
+                } else {
+                    //todo inform agent that he had meet the wall
+                }
+            }
+            ActionType.GoForward -> {
+                if (environmentObject.getYdimensionWalls().second != environmentObject.positionOfCleaner.second) {
+                    environmentObject.positionOfCleaner = Pair(environmentObject.positionOfCleaner.first, environmentObject.positionOfCleaner.second + 1)
 
-    }
+                } else {
+                    //todo inform agent that he had meet the wall
+                }
+            }
+            else -> {
+                //todo wrong action to change Cleaner position
+            }
+        }
 
-    private fun goBack() {
-
+        return environmentObject
     }
 
     private fun suckDirt() {
-        TODO("update environment data")
+        environmentObject.currentEnvironment.replace(environmentObject.positionOfCleaner, false)
+        energyPoints += 10
+
     }
 
 
