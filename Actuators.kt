@@ -1,36 +1,28 @@
-package com.mrkostua.mathalarm
-
 /**
  * @author Kostiantyn Prysiazhnyi on 30.01.2018.
  */
-public class Actuators(private val environmentObject: EnvironmentObject) {
-    public var DEFAULT_AMOUNT_OF_ENERGY_POINTS = 1000
-    var energyPoints: Int
-
-    init {
-        energyPoints = DEFAULT_AMOUNT_OF_ENERGY_POINTS
-    }
-
+public class Actuators(private val environmentObject: EnvironmentObject,public var initialAmountOfEnegyPoints : Int = 1000) {
+    
     public fun doAction(actionType: ActionType): EnvironmentObject {
         when (actionType) {
             ActionType.TurnLeft -> {
                 updateCleanerLocation(actionType)
-                energyPoints -= 1
+                initialAmountOfEnegyPoints -= 1
 
             }
             ActionType.TurnRight -> {
                 updateCleanerLocation(actionType)
-                energyPoints -= 1
+                initialAmountOfEnegyPoints -= 1
 
             }
             ActionType.GoForward -> {
                 updateCleanerLocation(actionType)
-                energyPoints -= 1
+                initialAmountOfEnegyPoints -= 1
 
             }
             ActionType.GoBack -> {
                 updateCleanerLocation(actionType)
-                energyPoints -= 1
+                initialAmountOfEnegyPoints -= 1
 
             }
             else -> {
@@ -89,8 +81,9 @@ public class Actuators(private val environmentObject: EnvironmentObject) {
     }
 
     private fun suckDirt() {
-        environmentObject.currentEnvironment.replace(environmentObject.positionOfCleaner, false)
-        energyPoints += 10
+        environmentObject.currentEnvironment[environmentObject.positionOfCleaner] = false
+        environmentObject.currentAmountOfDirtyRooms -= 1
+        initialAmountOfEnegyPoints += 10
 
     }
 
