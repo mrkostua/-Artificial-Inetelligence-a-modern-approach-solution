@@ -1,48 +1,62 @@
-import java.util.*
-
 /**
  * @author Kostiantyn Prysiazhnyi on 30.01.2018.
  */
-class EnvironmentObject(private val dimensionX: Int, private val dimensionY: Int, private val percentOfDirt: Int) {
+
+class EnvironmentObject private constructor(private val dimensionX: Int, private val dimensionY: Int, private val percentOfDirt: Int) {
     private val random = Random()
     private val amountOfRooms = dimensionX * dimensionY
+    private val dirtyRoomsLocationList : MutableSet<Pair<Int,Int>> = HashSet<Pair<Int,Int>>() 
+	
     var currentEnvironment: MutableMap<Pair<Int, Int>, Boolean>
     var currentAmountOfDirtyRooms: Int
     var positionOfCleaner: Pair<Int, Int>
-	
+    var initialAmountOfDirt = getInitialAmountOfDirt()
     
-    init {
+	
+     init {
         currentEnvironment = generateInitialEnvironment()
         currentAmountOfDirtyRooms = getInitialAmountOfDirt()
         positionOfCleaner = getInitialPositionOfCleaner()
 
     }
+    
+  	companion object {
+        @Volatile private var INSTANCE : EnvironmentObject? = null
+        
+        fun getInstance(  dimensionX: Int,dimensionY: Int,percentOfDirt: Int){
+            INSTANCE ?: synchronized(this){
+                INSTANCE ?: EnvironmentObject(dimensionX,dimensionY,percentOfDirt)
+            }
+        }
+    }
+   
 
     public fun isCurrentRoomClean(): Boolean = currentEnvironment[positionOfCleaner] ?: true
 
     private fun generateInitialEnvironment(): MutableMap<Pair<Int, Int>, Boolean> {
-		//first of all we need to intial some size of enviroment in our app it can only x/y enviroment with walls and without any obstacles
-		//also we need in some way generate percentOfDirt and randomly set it in environment
-		val environmentMap = MutableMap<Pair<Int,Int>, Boolean>()
+		val environmentMap :  MutableMap<Pair<Int,Int>, Boolean> = HashMap<Pair<Int,Int>, Boolean>()
         for(x in 0..dimensionX){
             for(y in 0..dimensionY){
                 environmentMap.put(Pair(x,y),false)
             }
         }
-       // use method genareteRandomlyDirtyRooms to set random rooms as dirty rooms
+        genareteRandomlyDirtyRooms()
+        for(dirtLocation in dirtyRoomsLocationList){
+            environmentMap[dirtLocation] = true
         
+        }
         return environmentMap
     }
-   private val dirtyRoomsLocationList : MutableSet<Pair<Int,Int>> = HashSet<Pair<Int,Int>>() 
+    
     private fun genareteRandomlyDirtyRooms() {
-        //here we need to randomly generate some amount of dirty rooms Pair(int,int) and every new generated room need to be unique so we can generate precisely given amount of dirty rooms
-   		     val requiredAmountOfDirt = getInitialAmountOfDirt()
-       var dirtyRoomLocation : Pair<Int,Int> = Pair<0,0>
-        	while(i<requiredAmountOfDirt){
-                dirtRoomLocation = Pair(getRandomNumber(0, dimensionX), getRandomNumber(0, dimensionY))
-                if(!dirtyRoomsLocationList.contains(dirtRoomLocation)){
-                    dirtyRoomsLocationList.put(dirtRoomLocation)
+       var dirtyRoomLocation = Pair(0,0)
+       var i = 0
+        	while(i < initialAmountOfDirt) {
+                dirtyRoomLocation = Pair(getRandomNumber(0, dimensionX), getRandomNumber(0, dimensionY))
+                if(!dirtyRoomsLocationList.contains(dirtyRoomLocation)){
+                    dirtyRoomsLocationList.add(dirtyRoomLocation)
                     i++
+                
                 }
             }
     }
