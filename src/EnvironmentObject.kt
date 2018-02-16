@@ -1,3 +1,5 @@
+import java.util.*
+
 /**
  * @author Kostiantyn Prysiazhnyi on 30.01.2018.
  */
@@ -10,12 +12,12 @@ class EnvironmentObject private constructor(private val dimensionX: Int, private
     var currentEnvironment: MutableMap<Pair<Int, Int>, Boolean>
     var currentAmountOfDirtyRooms: Int
     var positionOfCleaner: Pair<Int, Int>
-    var initialAmountOfDirt = getInitialAmountOfDirt()
+    val initialAmountOfDirt = (dimensionX * dimensionY * percentOfDirt) / 100
 
 
     init {
         currentEnvironment = generateInitialEnvironment()
-        currentAmountOfDirtyRooms = getInitialAmountOfDirt()
+        currentAmountOfDirtyRooms = initialAmountOfDirt
         positionOfCleaner = getInitialPositionOfCleaner()
 
     }
@@ -60,8 +62,6 @@ class EnvironmentObject private constructor(private val dimensionX: Int, private
             }
         }
     }
-
-    private fun getInitialAmountOfDirt(): Int = (dimensionX * dimensionY * percentOfDirt) / 100
 
     private fun getInitialPositionOfCleaner(): Pair<Int, Int> =
             Pair(getRandomNumber(0, dimensionX), getRandomNumber(0, dimensionY))

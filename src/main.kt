@@ -1,7 +1,8 @@
 /**
  * @author Kostiantyn Prysiazhnyi on 05.02.2018.
  */
-fun main(args: ArrayList<String>) {
+fun main(args : Array<String>) {
+    println("Hello, world!")
     /**
      *Here we need to :
     (create one instances of Environment and Actuators) so it is kind of Singletone )
