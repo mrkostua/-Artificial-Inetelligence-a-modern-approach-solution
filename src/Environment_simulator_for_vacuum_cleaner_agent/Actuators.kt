@@ -1,28 +1,30 @@
+package Environment_simulator_for_vacuum_cleaner_agent
+
 /**
  * @author Kostiantyn Prysiazhnyi on 30.01.2018.
  */
-public class Actuators(private val environmentObject: EnvironmentObject, public var initialAmountOfEnegyPoints: Int = 1000) {
+public class Actuators(private val environmentObject: EnvironmentObject, public var amountOfEnergyPoints: Int = 1000) {
 
     public fun doAction(actionType: ActionType): EnvironmentObject {
         when (actionType) {
             ActionType.TurnLeft -> {
                 updateCleanerLocation(actionType)
-                initialAmountOfEnegyPoints -= 1
+                amountOfEnergyPoints -= 1
 
             }
             ActionType.TurnRight -> {
                 updateCleanerLocation(actionType)
-                initialAmountOfEnegyPoints -= 1
+                amountOfEnergyPoints -= 1
 
             }
             ActionType.GoForward -> {
                 updateCleanerLocation(actionType)
-                initialAmountOfEnegyPoints -= 1
+                amountOfEnergyPoints -= 1
 
             }
             ActionType.GoBack -> {
                 updateCleanerLocation(actionType)
-                initialAmountOfEnegyPoints -= 1
+                amountOfEnergyPoints -= 1
 
             }
             else -> {
@@ -84,7 +86,7 @@ public class Actuators(private val environmentObject: EnvironmentObject, public 
     private fun suckDirt() {
         environmentObject.currentEnvironment[environmentObject.positionOfCleaner] = false
         environmentObject.currentAmountOfDirtyRooms -= 1
-        initialAmountOfEnegyPoints += 10
+        amountOfEnergyPoints += 10
 
     }
 

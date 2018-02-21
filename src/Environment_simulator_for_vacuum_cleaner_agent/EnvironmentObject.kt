@@ -1,3 +1,5 @@
+package Environment_simulator_for_vacuum_cleaner_agent
+
 import java.util.*
 
 /**
@@ -7,7 +9,7 @@ import java.util.*
 class EnvironmentObject private constructor(private val dimensionX: Int, private val dimensionY: Int, private val percentOfDirt: Int) {
     private val random = Random()
     private val amountOfRooms = dimensionX * dimensionY
-    private val dirtyRoomsLocationList: MutableSet<Pair<Int, Int>> = HashSet<Pair<Int, Int>>()
+    private val dirtyRoomsLocationList: MutableSet<Pair<Int, Int>> = HashSet()
 
     var currentEnvironment: MutableMap<Pair<Int, Int>, Boolean>
     var currentAmountOfDirtyRooms: Int
@@ -23,11 +25,13 @@ class EnvironmentObject private constructor(private val dimensionX: Int, private
     }
 
     companion object {
-        @Volatile private var INSTANCE: EnvironmentObject? = null
+        @Volatile
+        private var INSTANCE: EnvironmentObject? = null
 
-        fun getInstance(dimensionX: Int, dimensionY: Int, percentOfDirt: Int) {
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: EnvironmentObject(dimensionX, dimensionY, percentOfDirt)
+        fun getInstance(dimensionX: Int, dimensionY: Int, percentOfDirt: Int): EnvironmentObject {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE
+                        ?: EnvironmentObject(dimensionX, dimensionY, percentOfDirt)
             }
         }
     }
